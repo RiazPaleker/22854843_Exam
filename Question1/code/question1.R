@@ -5,16 +5,16 @@ HBO_Titles <- readRDS("./data/US_Baby_names/HBO_titles.rds")
 HBO_Credits <- readRDS("./data/US_Baby_names/HBO_credits.rds")
 
 
-library(dplyr)
 
-# Filter the top 25 boys and girls names for each year
-top_25_names_per_year <- Baby_Names %>%
+library(dplyr)
+library(stats)
+
+top_25_names <- Baby_Names %>%
     group_by(Year, Gender) %>%
     top_n(25, Count) %>%
     ungroup()
 
 # Function to calculate serial correlation
-# lag = subsequent years populairty of names
 calculate_serial_correlation <- function(Baby_Names, start_year, gender, lag = 1:3) {
     correlation_results <- data.frame(Lag = integer(), Correlation = numeric())
 
@@ -37,20 +37,18 @@ calculate_serial_correlation <- function(Baby_Names, start_year, gender, lag = 1
 }
 
 # Apply the function to all years and genders
-all_years <- unique(top_25_names_per_year$Year)
-all_genders <- unique(top_25_names_per_year$Gender)
+all_years <- unique(top_25_names$Year)
+all_genders <- unique(top_25_names$Gender)
 results <- data.frame(Year = integer(), Gender = character(), Lag = integer(), Correlation = numeric())
 
 for (year in all_years) {
     for (gender in all_genders) {
-        correlation_results <- calculate_serial_correlation(top_25_names_per_year, year, gender)
+        correlation_results <- calculate_serial_correlation(top_25_names, year, gender)
         correlation_results$Year <- year
         correlation_results$Gender <- gender
         results <- rbind(results, correlation_results)
     }
 }
-
-
 
 # Function to calculate average correlation by decade
 average_correlation_by_decade <- function(results) {
@@ -67,12 +65,10 @@ decade_correlation <- average_correlation_by_decade(results)
 # Plot the results to visualize the trends
 library(ggplot2)
 
-serial_correlation_plot = decade_correlation %>%
-    ggplot() +
-    geom_line(aes(x = Decade, y = Average_Correlation, color = as.factor(Lag))) +
-    facet_wrap(~ Gender) +
-    labs(title = "Average Serial Correlation of Popular Names by Decade",
-         x = "Decade",
-         y = "Average Serial Correlation",
-         color = "Subsequent Year")
+corr_plot = decade_correlation %>% ggplot() +
+    geom_line(aes(x = Decade, y = Average_Correlation, color = as.factor(Lag)))+
+    facet_wrap(~ Gender) + labs(title = "Average Serial Correlation of Popular Names by Decade",
+                                              x = "Decade",
+                                              y = "Average Correlation",
+                                              color = "Subsequent Year")
 
