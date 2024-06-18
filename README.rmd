@@ -1,7 +1,7 @@
 ---
 output:
   md_document:
-    variant: markdown_github
+    variant: html
 ---
 
 # Purpose
@@ -22,8 +22,10 @@ list.files('code/', full.names = T, recursive = T) %>% .[grepl('.R', .)] %>% as.
 ```
 
 
-# Create Texevier templates for questions 1 to 4 
 ```{r, include=FALSE}
+
+# Create Texevier templates for questions 1 to 4 
+
 Texevier::create_template(directory = "/Users/riazpaleker/Documents/Mcom Economics/Data Science/R/22854843_Exam/22854843_Exam", template_name = "Question1")
 
 Texevier::create_template(directory = "/Users/riazpaleker/Documents/Mcom Economics/Data Science/R/22854843_Exam/22854843_Exam", template_name = "Question2")
@@ -34,3 +36,5 @@ Texevier::create_template(directory = "/Users/riazpaleker/Documents/Mcom Economi
 
 ```
 
+
+# Question One
