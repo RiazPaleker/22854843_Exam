@@ -21,4 +21,8 @@ library(tidyverse)
 list.files('code/', full.names = T, recursive = T) %>% .[grepl('.R', .)] %>% as.list() %>% walk(~source(.))
 ```
 
+```{r}
+x =10
+remove(x)
+```
 
