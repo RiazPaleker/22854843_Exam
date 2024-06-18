@@ -1,5 +1,5 @@
 ---
-title: "Helping You Write Academic Papers in R using Texevier"
+title: "European Union (EU) Aid in Russia-Ukraine Conflict"
 documentclass: elsarticle
 Thesis_FP: false
 output:
@@ -10,8 +10,7 @@ output:
     template: Tex/TexDefault.txt
     fig_width: 3.5
     fig_height: 3.5
-Author1: Jane Doe^[__Contributions:__  \newline _The authors would like to thank no
-  institution for money donated to this project. Thank you sincerely._]
+Author1: Jane Doe^
 Ref1: Some Institution, Cape Town, South Africa
 Email1: nfkatzke\@gmail.com
 Author2: John Smith
@@ -41,12 +40,9 @@ fontsize: 11pt
 linestretch: 1.2
 link-citations: true
 AddTitle: true
-abstract: null
+abstract: An analysis on the commitment and allocation of humanitarian aid from EU countries
 ---
 
-<!-- First: Set your default preferences for chunk options: -->
-
-<!-- If you want a chunk's code to be printed, set echo = TRUE. message = FALSE stops R printing ugly package loading details in your final paper too. I also suggest setting warning = FALSE and checking for warnings in R, else you might find ugly warnings in your paper. -->
 
 ```{r setup, include=FALSE}
 
@@ -65,21 +61,42 @@ source("code/combine_plot.R")
 ```
 
 
+# Allocations
+
+* The figure below represents the humanitarian allocations from EU countries. We find that Estonia and France are the only countries that significantly allocated humanitarian aid to its budget
+* Italy, Sweeden and Bulguria have also allocated some budget for aid
+* Germany, Croatia, Netherlands, Poland, Slovakia have all allocated almost no aid to its budget
 
 ```{r, echo=FALSE}
 Humanatarian_Aid_alloc_plot = Aid_alloc(alloc)
 Humanatarian_Aid_alloc_plot
 ```
 
+# Commitment
+
+* This figure shows the commitment (promise) that EU countries have to allocate humunaitarian aid.
+* Germany, Netherlands and Poland are notable countries who have committed in providing the most aid
+
 ```{r, echo=FALSE}
 Humanatarian_Aid_Commit_plot = Aid_commit(commit)
 Humanatarian_Aid_Commit_plot
 ```
 
+# Allocation vs Commitment
+
+* This figure shows a side-by-side graph of the commitment (blue) versus allocation (red) of humanitarian aid by the EU countries
+* There are a few countries such as Sweden, Spain and Belgium that has allocated just as much as they have committed
+* Germany is an interesting case as they have committed a significant amount of aid but has so far allocated none to its budget. Netherlands and Poland are in a similar position
+* Countries such as France, Estonia and Italy have done the complete opposite. They have allocated more funds than what they promised to commit.
+* This is a refreshing sign from these few countries that have placed a high importance on humanitarian aid.
 ```{r, echo=FALSE, warning=FALSE}
 combined_plots = combine_plots(alloc,commit)
 combined_plots
 ```
 
+# Other Talking Points
 
+* A figure was not constructed but we can also compare how much spending is dedicated towards the country's military.
+* We can compare if this exceeds the allocated humanitarian aid.
+* This will also help us understand the commitment or weight of importance that EU countries place on the conflict
 
