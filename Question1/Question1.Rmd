@@ -63,6 +63,8 @@ library(tidyverse)
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
+library(stringdist)
+
 
 
 Baby_Names <- readRDS("./data/US_Baby_names/Baby_Names_By_US_State.rds")
@@ -130,9 +132,9 @@ average_correlation_by_decade <- function(results) {
 decade_correlation <- average_correlation_by_decade(results)
 ```
 
-# Question One 
+# 1. Question One 
 
-## Pesristence in Popular Names
+## 1.1 Pesristence in Popular Names
 
 * The figure below shows the persistence of the top 25 popular names and that of the next 3 years
 * F is female, while M is Male
@@ -159,4 +161,71 @@ corr_plot
 
 ```
 
+# 1.2 Similarities between Names and Billboard Hot 100 for New York from 2010 to 2014
+
+* The figure below shows the matching of the popularity of names (New York.) and artists who peaked number one on the Billboard Hot 100.
+* I.E: represents the most popular names that are also names of artists that were number one at one point in a given year (from 2010 to 2014)
+* New York is used specifically as this is where the agency is based
+* The x-axis represents the most popular baby names that matched artist names from 2010 to 2014.
+* Aiden, David, Liam and Lucas were popular in some years but not at all in other years. This can be a result of a popular song
+* Names such as Emma, Ethan, Jacob, Michael and Sophia were constantly popular over these years.
+
+
+```{r, include=FALSE}
+
+subset_baby_names <- function(Baby_Names) {
+    # Filter the data for the year 2014 and state New York
+    filter_names <- Baby_Names %>%
+        filter(Year>=2010 & Year<=2014, State == "NY", Count>=1000 )%>%
+        arrange(desc(Count))
+
+    return(filter_names[,-c(1,4,5)])
+}
+
+new_names =subset_baby_names(Baby_Names)
+
+subset_charts  <- function(charts){
+
+    filter_charts = charts %>%
+        filter(date>="2010-01-01" & date<="2014-12-31", charts$`peak-rank`==1) %>%
+        mutate(year = year(date)) %>%
+        select(-date) %>%
+        rename(date = year)
+
+
+    return(filter_charts[,-c(1,2,4,5,6)])
+
+
+}
+charts_new=subset_charts(charts)
+colnames(charts_new) =c("Name", "Year")
+
+
+# Finding matches between names
+matching_names <- stringdist::amatch(new_names$Name, charts_new$Name, maxDist = 5)
+
+# Filter new_names that matches the artist names
+names_to_plot <- new_names$Name[!is.na(matching_names)]
+
+#  Aggregate counts across years for names that we need to plot
+agg_data <- new_names %>%
+    filter(Name %in% names_to_plot) %>%
+    group_by(Name, Year) %>%
+    summarise(TotalCount = sum(Count))
+
+```
+
+```{r, echo=FALSE}
+
+# using ggplot
+charts_names_plot = agg_data %>% ggplot() +
+    geom_point(aes(x = Name, y = Year, size = TotalCount), shape = 21, fill="blue", alpha = 0.6, ) +
+    guides(size = F)+ theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+    labs(title = "Popularity of Baby Names and Artists in Hot 100 Charts",
+         x = "Names",
+         y = "Year")
+
+charts_names_plot
+
+```
 

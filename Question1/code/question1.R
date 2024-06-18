@@ -126,10 +126,9 @@ library(ggplot2)
 
 charts_names_plot = agg_data %>% ggplot() +
     geom_point(aes(x = Name, y = Year, size = TotalCount), shape = 21, fill="blue", alpha = 0.6, ) +
-    guides(size = F)+
+    guides(size = F)+ theme(axis.text.x = element_text(angle = 45, hjust = 1))+
     labs(title = "Popularity of Names in Hot 100 Charts",
          x = "Names",
-         y = "Total Count",
-         size = "Total Count")
+         y = "Total Count")
 
 charts_names_plot
