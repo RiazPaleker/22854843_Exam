@@ -10,8 +10,7 @@ output:
     template: Tex/TexDefault.txt
     fig_width: 3.5
     fig_height: 3.5
-Author1: Jane Doe^[__Contributions:__  \newline _The authors would like to thank no
-  institution for money donated to this project. Thank you sincerely._]
+Author1: Jane Doe^
 Ref1: Some Institution, Cape Town, South Africa
 Email1: nfkatzke\@gmail.com
 Author2: John Smith
@@ -65,6 +64,7 @@ GDP <- readRDS("./Data/olympics/GDP.rds")
 
 source("code/GDP_plot.R")
 source("code/GDPvMedal.R")
+source("code/Dominance_plot.R")
 ```
 
 
@@ -84,5 +84,11 @@ GDP_plot
 ```{r,echo=FALSE, fig.width=8}
 point_olympic_plot <- GDP_per_capita_medal(GDP,summer)
 point_olympic_plot
+```
+
+
+```{r,echo=FALSE, fig.width=8, warning=FALSE, message=FALSE}
+combined_dominance_plot <- dominance_plot(summer,winter)
+grid::grid.draw(combined_dominance_plot)
 ```
 
