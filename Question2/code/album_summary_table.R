@@ -35,7 +35,7 @@ album_summary <- function(metallica, coldplay){
   summary_table <- combined %>%
     gt() %>%
     tab_header(
-      title = md("*Average Metrics for Coldplay and Metallica Albums*"),
+      title = md("*Average Metrics for Coldplay and Metallica's Popular Album*"),
       subtitle = "Metallica:72 Seasons and Coldplay:Parachutes"
     ) %>%
     fmt_number(

@@ -66,6 +66,7 @@ billboard_100 <- readRDS("./Data/Coldplay_vs_Metallica/charts.rds")
 source("code/metallic_album_popular.R")
 source("code/coldplay_album_popular.R")
 source("code/album_summary_table.R")
+source("code/regress_metallica.R")
 
 
 ```
@@ -94,5 +95,11 @@ popular_coldplay_plot
 ```{r, echo=FALSE}
 table_album_summary = album_summary(metallica,coldplay)
 table_album_summary
+```
+
+
+```{r}
+combined_reg_plot <- regress_metallica(metallica)
+combined_reg_plot
 ```
 
