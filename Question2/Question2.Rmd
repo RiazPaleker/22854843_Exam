@@ -10,8 +10,7 @@ output:
     template: Tex/TexDefault.txt
     fig_width: 3.5
     fig_height: 3.5
-Author1: Jane Doe^[__Contributions:__  \newline _The authors would like to thank no
-  institution for money donated to this project. Thank you sincerely._]
+Author1: Jane Doe^
 Ref1: Some Institution, Cape Town, South Africa
 Email1: nfkatzke\@gmail.com
 Author2: John Smith
@@ -42,7 +41,7 @@ linestretch: 1.2
 link-citations: true
 AddTitle: true
 abstract: |
-  Abstract to be written here. The abstract should not be too long and should provide the reader with a good understanding what you are writing about. Academic papers are not like novels where you keep the reader in suspense. To be effective in getting others to read your paper, be as open and concise about your findings here as possible. Ideally, upon reading your abstract, the reader should feel he / she must read your paper in entirety.
+  
 ---
 
 ```{r setup, include=FALSE}
@@ -67,6 +66,8 @@ source("code/metallic_album_popular.R")
 source("code/coldplay_album_popular.R")
 source("code/album_summary_table.R")
 source("code/regress_metallica.R")
+source("code/regress_coldplay.R")
+
 
 
 ```
@@ -101,5 +102,11 @@ table_album_summary
 ```{r}
 combined_reg_plot <- regress_metallica(metallica)
 combined_reg_plot
+```
+
+```{r}
+combined_reg_plot_coldplay <- regress_coldplay(coldplay)
+combined_reg_plot_coldplay
+
 ```
 
