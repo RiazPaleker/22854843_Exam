@@ -1,17 +1,22 @@
     GDP_per_capita <- function(GDP,summer) {
 
         library(dplyr)
+        library(hrbrthemes)
         GDP_sort <- GDP %>%
             arrange(desc(`GDP per Capita`))
 
         GDP <- GDP_sort
 
-        #select 5 countries above and below India
         GDP_sub <- GDP[c(125:142),2]
+        #select any countries with similar economy size to India
+        # & any emerging economies
+        # & any South American Countries
 
-        country_codes <- c("SOL", "CGO", "MDA", "LAO", "STP", "IND", "PAK",
-                           "YEM", "CIV", "KEV", "GHA",
-                           "UKR","VIE","DJI","ZAM","CMR","BAN")
+
+
+        country_codes <- c("IND", "PAK", "UKR","RSA","BRA",
+                           "TUR","MEX","ARG","COL","GHA",
+                           "KEN","CGO","NGR")
 
         summer_sub <- summer %>%
             filter(Country %in% country_codes)
@@ -39,12 +44,11 @@
         # Create combined bar plot
         GDP_plot <- ggplot(medal_counts_long, aes(x = Country, y = Count, fill = Medal)) +
             geom_bar(stat = "identity", position = position_dodge()) +
-            labs(title = "Countries with Similar Economy Size to India",
+            labs(title = "Countries Medal Count",
                  x = "Country",
                  y = "Count of Medals") +
             scale_fill_manual(values = c("Gold" = "gold", "Silver" = "grey", "Bronze" = "brown")) +
-            theme_minimal() +
-            theme(axis.text.x = element_text(angle = 45, hjust = 1))
+            theme(axis.text.x = element_text(angle = 45, hjust = 1))+theme_ipsum()
 
         GDP_plot
     }
