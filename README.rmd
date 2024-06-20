@@ -5,7 +5,7 @@ output:
 ---
 
 
-```{r}
+```{r,include=FALSE}
 
 library(tidyverse)
 list.files('code/', full.names = T, recursive = T) %>% .[grepl('.R', .)] %>% as.list() %>% walk(~source(.))
