@@ -1,5 +1,5 @@
 ---
-title: "Helping You Write Academic Papers in R using Texevier"
+title: "Perspectives on the Olympics"
 documentclass: elsarticle
 Thesis_FP: false
 output:
@@ -40,13 +40,8 @@ fontsize: 11pt
 linestretch: 1.2
 link-citations: true
 AddTitle: true
-abstract: |
-  Abstract to be written here. The abstract should not be too long and should provide the reader with a good understanding what you are writing about. Academic papers are not like novels where you keep the reader in suspense. To be effective in getting others to read your paper, be as open and concise about your findings here as possible. Ideally, upon reading your abstract, the reader should feel he / she must read your paper in entirety.
+abstract: This report is based on Olympic data. We compared how well India has done to economies of similar size, to other emerging economies and to some of the South American countries. We then show a time-series analysis on the top 5 countries that dominated the summer and winter olympics. We concluded by identifying countries who successful agains the odds
 ---
-
-<!-- First: Set your default preferences for chunk options: -->
-
-<!-- If you want a chunk's code to be printed, set echo = TRUE. message = FALSE stops R printing ugly package loading details in your final paper too. I also suggest setting warning = FALSE and checking for warnings in R, else you might find ugly warnings in your paper. -->
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 6, fig.height = 5, fig.pos="H", fig.pos = 'H')
@@ -72,11 +67,12 @@ source("code/overperform_winter.R")
 
 
 
-<!-- ############################## -->
-<!-- # Start Writing here: -->
-<!-- ############################## -->
+## How Well has India Done?
 
-# Introduction \label{Introduction}
+* Below is a graph of countries that are for comparison purposes. We included emerging economies, south american countries and countries with similar economy size to India.
+* The tally of each countries gold, silver and bronze medals are shown on a bar plot
+* India has quite a low medal count according to this graph.
+* The next figure provides more context.
 
 
 ```{r, echo=FALSE, fig.width=8}
@@ -84,23 +80,53 @@ GDP_plot =GDP_per_capita(GDP,summer)
 GDP_plot
 ```
 
+
+## India's Position in Context
+
+* This plot shows the position of countries given their medal count and GDP per capita. This figure gives us more context
+* Given, India's GDP per capita, it has achieved a decent medal count in comparison to the countries with a similar economy size. We find that countries like Kenya and Ukraine are doing extremly well at the olympics given their economy size.
+* India is doing well compared to its rivals Pakistan
+
+
 ```{r,echo=FALSE, fig.width=8}
 point_olympic_plot <- GDP_per_capita_medal(GDP,summer)
 point_olympic_plot
 ```
 
 
+## Dominance in the Olympics
+
+* The figures below show the dominance of nations in the summer and winter olympics. This is achieved through a heat map of points.
+* In the summer olympics:
+* The USA and URS have found to dominate the summer olympics overtime. The USA is still very successful
+* GBR had loads of success in the early 1900s
+* The other dominant countries were ITA and GBR
+
+* In the winter olympics:
+* USA and URS over the full time period were the dominant nations
+* In recent years CAN have been dominating the winter olympics. SWE has also yielded some recent success
+* NOR is the 5th country that has had small but constant sucesss overtime.
+
 ```{r,echo=FALSE, fig.width=8, warning=FALSE, message=FALSE}
 combined_dominance_plot <- dominance_plot(summer,winter)
 grid::grid.draw(combined_dominance_plot)
 ```
 
+
+## The Underdogs in the Summer Olympics
+
+* This plot shows the success of the nations (y-axis), given their GDP per Capita (x-axis). The plot includes the quartiles of the GDP per capita
+* Countries that punch above their weight are those that achieve medals given a low GDP per capita
+* UKR, BUL, KEN,ETH and CHN are those countries that "punched above their weight"
 ```{r, fig.height=7, fig.width=8, warning=FALSE, echo=FALSE}
 gdp_medal_summer_plot <- over_perform_summer(GDP,summer)
 gdp_medal_summer_plot
 
 ```
 
+* We can also do the same comparison in the winter olympics
+* RUS and CHN have been successful in achieving medals. They have achieved this despite their GDP per Capita being below the first quartile.
+* This is what we describe as those who "punch above their weight"
 
 ```{r,fig.height=7, fig.width=8, warning=FALSE, echo=FALSE}
 gdp_medal_winter_plot <- over_perform_winter(GDP,winter)
