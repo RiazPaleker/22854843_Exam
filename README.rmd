@@ -1,22 +1,12 @@
 ---
 output:
   md_document:
-    variant: html
+    variant: markdown_github
 ---
-
-# Purpose
-
-Purpose of this work folder.
-
-Ideally store a minimum working example data set in data folder.
-
-Add binary files in bin, and closed R functions in code. Human Readable settings files (e.g. csv) should be placed in settings/
 
 
 ```{r}
 
-rm(list = ls()) # Clean your environment:
-gc() # garbage collection - It can be useful to call gc after a large object has been removed, as this may prompt R to return memory to the operating system.
 library(tidyverse)
 list.files('code/', full.names = T, recursive = T) %>% .[grepl('.R', .)] %>% as.list() %>% walk(~source(.))
 ```
@@ -37,4 +27,37 @@ Texevier::create_template(directory = "/Users/riazpaleker/Documents/Mcom Economi
 ```
 
 
+```{r,include=FALSE}
+
+
+#Q2
+source("code/metallic_album_popular.R")
+source("code/coldplay_album_popular.R")
+source("code/album_summary_table.R")
+source("code/regress_metallica.R")
+source("code/regress_coldplay.R")
+
+#Q3
+source("code/Aid_alloc_plot.R")
+source("code/Aid_Commit_plot.R")
+source("code/combine_plot.R")
+
+#Q4
+source("code/GDP_plot.R")
+source("code/GDPvMedal.R")
+source("code/Dominance_plot.R")
+source("code/overperform_summer.R")
+source("code/overperform_winter.R")
+
+```
+
 # Question One
+
+
+```{r}
+#Q1: Source
+source("code/name_persistence.R")
+source("code/Names_Artists.R")
+source("code/change_billboard.R")
+```
+
