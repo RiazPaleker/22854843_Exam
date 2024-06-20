@@ -65,6 +65,9 @@ GDP <- readRDS("./Data/olympics/GDP.rds")
 source("code/GDP_plot.R")
 source("code/GDPvMedal.R")
 source("code/Dominance_plot.R")
+source("code/overperform_summer.R")
+source("code/overperform_winter.R")
+
 ```
 
 
@@ -91,4 +94,18 @@ point_olympic_plot
 combined_dominance_plot <- dominance_plot(summer,winter)
 grid::grid.draw(combined_dominance_plot)
 ```
+
+```{r, fig.height=7, fig.width=8, warning=FALSE, echo=FALSE}
+gdp_medal_summer_plot <- over_perform_summer(GDP,summer)
+gdp_medal_summer_plot
+
+```
+
+
+```{r,fig.height=7, fig.width=8, warning=FALSE, echo=FALSE}
+gdp_medal_winter_plot <- over_perform_winter(GDP,winter)
+gdp_medal_winter_plot
+```
+
+
 
