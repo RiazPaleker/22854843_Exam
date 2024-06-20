@@ -27,29 +27,12 @@ Texevier::create_template(directory = "/Users/riazpaleker/Documents/Mcom Economi
 ```
 
 
-```{r,include=FALSE}
 
-
-
-
-#Q3
-source("code/Aid_alloc_plot.R")
-source("code/Aid_Commit_plot.R")
-source("code/combine_plot.R")
-
-#Q4
-source("code/GDP_plot.R")
-source("code/GDPvMedal.R")
-source("code/Dominance_plot.R")
-source("code/overperform_summer.R")
-source("code/overperform_winter.R")
-
-```
 
 # Question One
 
 ### Source
-```{r}
+```{r, include=FALSE}
 
 source("code/name_persistence.R")
 source("code/Names_Artists.R")
@@ -58,7 +41,7 @@ source("code/change_billboard.R")
 
 
 ### Data
-```{r}
+```{r,include=FALSE}
 Baby_Names <- readRDS("./data/US_Baby_names/Baby_Names_By_US_State.rds")
 charts <- readRDS("./data/US_Baby_names/charts.rds")
 HBO_Titles <- readRDS("./data/US_Baby_names/HBO_titles.rds")
@@ -67,7 +50,7 @@ HBO_Credits <- readRDS("./data/US_Baby_names/HBO_credits.rds")
 
 
 ### Packages
-```{r}
+```{r,include=FALSE}
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
@@ -171,4 +154,99 @@ Plot four is the same regression analysis and plot but for Coldplay. The data wr
 combined_reg_plot_coldplay <- regress_coldplay(coldplay)
 combined_reg_plot_coldplay
 
+```
+
+
+# Question Three
+
+
+### Source
+
+```{r,include=FALSE}
+source("code/Aid_alloc_plot.R")
+source("code/Aid_Commit_plot.R")
+source("code/combine_plot.R")
+
+```
+
+
+### Data
+
+```{r,include=FALSE}
+alloc <- read.csv("./data/Ukraine_Aid/Financial Allocations.csv")
+commit <- read.csv("./Data/Ukraine_Aid/Financial Commitments.csv")
+```
+
+
+### Plot One
+
+This graph shows the allocation of EU countries for humanitarian aid. We created a function which had one input (Alloc dataset). we used the piping function to subset our data. We used filter to get EU members only, then used select to remove EU members as a variables in the next line we used gather to make our data set long. We the subset our data further to contain only humanitarian aid. We then used ggplot with geom_bar to plot.
+
+```{r, echo=FALSE}
+Humanatarian_Aid_alloc_plot = Aid_alloc(alloc)
+Humanatarian_Aid_alloc_plot
+```
+
+### Plot Two
+
+This data wrangling process followed the exact steps as above. We just used the commit data set. The graph shows the EU countries that made a commitment to provide humanitarian aid. We created a function which had one input (Commit dataset). we used the piping function to subset our data. We used filter to get EU members only, then used select to remove EU members as a variables in the next line we used gather to make our data set long. We the subset our data further to contain only humanitarian aid. We then used ggplot with geom_bar to plot.
+
+```{r, echo=FALSE}
+Humanatarian_Aid_Commit_plot = Aid_commit(commit)
+Humanatarian_Aid_Commit_plot
+```
+
+### Plot Three
+
+The graphs below show the EU countries with two bars for each countries. The red bar indicating allocationa and blue representing commitment. This is for humanatraian aid. We first had to wrangle the alloc data. We did the exact same thing for the first plotWe created a function which had one input (Commit dataset). we used the piping function to subset our data. We used filter to get EU members only, then used select to remove EU members as a variables in the next line we used gather to make our data set long. We the subset our data further to contain only humanitarian aid. The same was done for commit. This was all under the combine_plots function. We combined our data from a wide format and then turned it long using gather for a representing purpose. We used a ggplot and geom_bar to plot the data.
+
+
+```{r, echo=FALSE, warning=FALSE}
+combined_plots = combine_plots(alloc,commit)
+combined_plots
+```
+
+# Question Four
+
+### Source
+```{r,include=FALSE}
+source("code/GDP_plot.R")
+source("code/GDPvMedal.R")
+source("code/Dominance_plot.R")
+source("code/overperform_summer.R")
+source("code/overperform_winter.R")
+```
+
+### Data
+```{r, include=FALSE}
+winter <- readRDS("./Data/olympics/winter.rds") 
+summer <- readRDS("./Data/olympics/summer.rds") 
+GDP <- readRDS("./Data/olympics/GDP.rds")
+```
+
+### Plot One
+
+This graph shows the gold, silver and bronze tally for specific countries: emerging markets, south american countries and countries with a similar economy size to India. Our two inputs is the summer and GDP data sets which are wrangled. We subset GDP to get the GDP per capita variable in descending order. We then extracted certain countries that we wanted to compare to India. We wrangled our summer data set using the piping and the filter function to match the countries to the countries that we have chosen to compare. We then calculated medals per country and using summarise to count sports teams as only one medal. we used distinct to find the distinct Year, Country, Sport and Medal. we grouped our data by country and medal before we used the summary function. We wanted to have 3 barplots per country we need a wide format data to have colomns for each type of medal. We then turned it back into the long format such that we can use ggplot and geom_bar functions.
+
+
+```{r, echo=FALSE, fig.width=8}
+GDP_plot =GDP_per_capita(GDP,summer)
+GDP_plot
+```
+
+### Plot Two
+
+The plot below has GDP per Capita on the x-axis and Medal count on the y-axis. The countries are the points in the graph in its respective position. This shows a country's medal count given its per capita GDP. Our function has two inputs which are our summer and GDP datasets. We subset our GDP data to only include country name and gdp per capita. we remove certain colomns. We have a data frame of country codes. We filtered our gdp data to keep only countries with that code. We used filter on the summer data to keep the certain countries and used left_join to make one dataset. We used a different way in this plot to get the medal count. We identified that number of payers in large team sports for diffrent sports. we used a ifelse function to tally only one medal if the respective team sport was matched. we then grouped our subset of summer data to group by country and gdp per capita and summary to sum the adjusted medal counts. We used ggplot for the axis and geom_point to plot the countries.
+
+```{r,echo=FALSE, fig.width=8}
+point_olympic_plot <- GDP_per_capita_medal(GDP,summer)
+point_olympic_plot
+```
+
+
+### Plot Three
+
+```{r,echo=FALSE, fig.width=8, warning=FALSE, message=FALSE}
+combined_dominance_plot <- dominance_plot(summer,winter)
+grid::grid.draw(combined_dominance_plot)
 ```

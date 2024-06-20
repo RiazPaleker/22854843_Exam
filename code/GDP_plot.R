@@ -27,7 +27,7 @@
             group_by(Country, Medal) %>%
             summarise(count = n(), .groups = 'drop')
 
-        # Pivot data to wide format for plotting
+        # Pivot data to wide format
         medal_counts_wide <- medal_counts %>%
             pivot_wider(names_from = Medal, values_from = count, values_fill = 0)
 
