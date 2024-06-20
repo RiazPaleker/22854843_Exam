@@ -123,3 +123,52 @@ spoitfy <- readRDS("./Data/Coldplay_vs_Metallica/Broader_Spotify_Info.rds")
 billboard_100 <- readRDS("./Data/Coldplay_vs_Metallica/charts.rds")
 ```
 
+
+### Plot One
+
+In this plot we created a function to get a bar graph for most popolar (on average) Metallica Album. Our main function had one input which was our metallica dataset. We subset Metallica using filetr and !grepl() to remove rows that conisted of various names. It was not successful in all cases. we then grouped metallica by album and summarised to get the average popularity mean. We then plot the popularity of albums using ggplot and geom_bar. We flipped the co-ordinates for better visual
+
+```{r,echo=FALSE,fig.height=6, fig.width=8, warning=FALSE}
+popular_metallic_plot =popular_album_metallica(metallica)
+popular_metallic_plot
+```
+
+### Plot Two
+
+This data wrangling process is exactly the same as the first plot. We did not have to use the grepl function as the coldplay dataset did not have many different versions of the same album. we grouped by album name and got the average popularity. This was ready to plot using ggplot.
+
+```{r,echo=FALSE,fig.height=6, fig.width=8}
+popular_coldplay_plot= popular_album_coldplay(coldplay)
+popular_coldplay_plot
+```
+
+
+### Table One
+
+The table below compared the metrics of the top two popular albums for each band. we use filter to get the specific albums from each data set and we used the summaries function to calculate the average of each variable. we used bind_rows to bind the two filtered datasets. We used the gt function to visualise our metrics
+
+```{r, echo=FALSE,warning=FALSE, message=FALSE}
+table_album_summary = album_summary(metallica,coldplay)
+table_album_summary
+```
+
+
+### Plot Three
+
+We used the group_by function to group the dataset by album. We the used an lm model to regress popularity on multiple independent variables. we used ggplot, geom_point and geom_smooth to represent a scatter plot with a trend line. we did this seperately for 5 independent variables. We can view the relationship between the variables 
+
+```{r, echo=FALSE,warning=FALSE, message=FALSE}
+combined_reg_plot <- regress_metallica(metallica)
+combined_reg_plot
+```
+
+
+### Plot Four
+
+Plot four is the same regression analysis and plot but for Coldplay. The data wrangling and plotting was conducted in the same way as the previous plot.
+
+```{r, echo=FALSE,warning=FALSE, message=FALSE}
+combined_reg_plot_coldplay <- regress_coldplay(coldplay)
+combined_reg_plot_coldplay
+
+```
