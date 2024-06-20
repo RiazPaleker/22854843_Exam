@@ -49,13 +49,10 @@ abstract: |
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 6, fig.height = 5, fig.pos="H", fig.pos = 'H')
 
+source("code/name_persistence.R")
+source("code/Names_Artists.R")
+source("code/change_billboard.R")
 
-# Lets load in example data, and see how this can be stored and later called from your 'data' folder.
-if(!require("tidyverse")) install.packages("tidyverse")
-library(tidyverse)
-
-# Notice that as you are working in a .Rproj file (I am assuming you are) - the relative paths of your directories start at your specified root.
-# This means that when working in a .Rproj file, you never need to use getwd() - it is assumed as your base root automatically.
 
 ```
 
@@ -74,64 +71,6 @@ HBO_Credits <- readRDS("./data/US_Baby_names/HBO_credits.rds")
 
 ```
 
-
-
-```{r,include=FALSE}
-
-top_25_names <- Baby_Names %>%
-    group_by(Year, Gender) %>%
-    top_n(25, Count) %>%
-    ungroup()
-
-# Function to calculate serial correlation
-calculate_serial_correlation <- function(Baby_Names, start_year, gender, lag = 1:3) {
-    correlation_results <- data.frame(Lag = integer(), Correlation = numeric())
-
-    for (l in lag) {
-        current_year_names <- Baby_Names %>%
-            filter(Year == start_year, Gender == gender) %>%
-            select(Name)
-
-        next_year_names <- Baby_Names %>%
-            filter(Year == (start_year + l), Gender == gender) %>%
-            select(Name)
-
-        common_names <- intersect(current_year_names$Name, next_year_names$Name)
-        correlation <- length(common_names) / 25
-
-        correlation_results <- rbind(correlation_results, data.frame(Lag = l, Correlation = correlation))
-    }
-
-    return(correlation_results)
-}
-
-# Apply the function to all years and genders
-all_years <- unique(top_25_names$Year)
-all_genders <- unique(top_25_names$Gender)
-results <- data.frame(Year = integer(), Gender = character(), Lag = integer(), Correlation = numeric())
-
-for (year in all_years) {
-    for (gender in all_genders) {
-        correlation_results <- calculate_serial_correlation(top_25_names, year, gender)
-        correlation_results$Year <- year
-        correlation_results$Gender <- gender
-        results <- rbind(results, correlation_results)
-    }
-}
-
-# Function to calculate average correlation by decade
-average_correlation_by_decade <- function(results) {
-    results %>%
-        mutate(Decade = floor(Year / 10) * 10) %>%
-        group_by(Decade, Gender, Lag) %>%
-        summarise(Average_Correlation = mean(Correlation)) %>%
-        ungroup()
-}
-
-# Calculate the average correlation by decade
-decade_correlation <- average_correlation_by_decade(results)
-```
-
 # Question One 
 
 ## 1.1 Pesristence in Popular Names
@@ -145,18 +84,9 @@ decade_correlation <- average_correlation_by_decade(results)
 * Since the 2000's there is  a significant decrease in persistent name popularity for both males and females. 
 * The recent data shows name popularity does not persist as it once did.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.width=8}
 
-# Plot the results to visualize the trends
-
-corr_plot = decade_correlation %>% ggplot() +
-    geom_line(aes(x = Decade, y = Average_Correlation, color = as.factor(Lag)))+
-    facet_wrap(~ Gender) + labs(title = "Average Correlation of Popular Names by Decade",
-                                              x = "Decade",
-                                              y = "Average Correlation",
-                                              color = "Subsequent Year")
-
-
+corr_plot <- name_persistence(Baby_Names, top_n_count = 25, lag = 1:3)
 corr_plot
 
 ```
@@ -170,114 +100,19 @@ corr_plot
 * Aiden, David, Liam and Lucas were popular in some years but not at all in other years. This can be a result of a popular artist having no hits or in recent times became popular
 * Names such as Emma, Ethan, Jacob, Isabella, Michael and Sophia were constantly popular over these years.
 
-```{r, echo=FALSE}
-
-subset_baby_names <- function(Baby_Names) {
-    # Filter the data for the year 2014 and state New York
-    new_names <- Baby_Names %>%
-        filter(Year>=2010 & Year<=2014, State == "NY", Count>=1000 )%>%
-        arrange(desc(Count))
-
-    return(new_names[,-c(1,4,5)])
-}
-
-new_names =subset_baby_names(Baby_Names)
-
-subset_charts_change  <- function(charts){
-    
-    charts_change = charts %>%
-        filter(date>="2000-01-01" & date<="2014-12-31", charts$`peak-rank`==1) %>%
-        mutate(year = year(date)) %>%
-        select(-date) %>%
-        rename(date = year)
-    
-    
-    return(charts_change[,-c(1,2,4,5,6)])
-
-}
-charts_change= subset_charts_change(charts)
-colnames(charts_change) =c("Name", "Year")
-
-match_and_aggregate <- function(new_names, charts_change, max_dist = 5) {
-    # Step 1: Find approximate matches
-    matching_names_new <- stringdist::amatch(new_names$Name, charts_change$Name, maxDist = max_dist)
-    
-    # Step 2: Filter Dataset 1 based on matching indices
-    names_to_plot_new <- new_names$Name[!is.na(matching_names_new)]
-    
-    # Step 3: Aggregate counts across years for names in names_to_plot
-    plotdata <- new_names %>%
-        filter(Name %in% names_to_plot_new) %>%
-        group_by(Name, Year) %>%
-        summarise(TotalCount = sum(Count), .groups = 'drop')
-    
-    return(plotdata)
-}
-
-plotdata <- match_and_aggregate(new_names, charts_change, max_dist = 5)
-
-# Step 4: Create the bubble plot using ggplot2
-library(ggplot2)
-
-charts_names_plot_new = plotdata %>% ggplot() +
-    geom_point(aes(x = Name, y = Year, size = TotalCount), shape = 21, fill="blue", alpha = 0.6, ) +
-    guides(size = F)+ theme(axis.text.x = element_text(angle = 45, hjust = 1))+
-    labs(title = "Popularity of Baby Names and Artists in Hot 100 Charts",
-         x = "Names",
-         y = "Years")
-
-charts_names_plot_new
+```{r, echo=FALSE, fig.width=8}
+charts_plot <- process_baby_names_and_charts_new(Baby_Names,charts)
+charts_plot
 ```
 
 * This figure now subsets the artist on the Billboard Hot 100 since 2014 and not 2000
 * We find that some names are no longer popular
 * Anthony and Justin are names that seem do not match any artists names
 
-```{r, include=FALSE}
+```{r, echo=FALSE, fig.width=8}
 
-subset_charts  <- function(charts){
-
-    filter_charts = charts %>%
-        filter(date>="2010-01-01" & date<="2014-12-31", charts$`peak-rank`==1) %>%
-        mutate(year = year(date)) %>%
-        select(-date) %>%
-        rename(date = year)
-
-
-    return(filter_charts[,-c(1,2,4,5,6)])
-
-
-}
-charts_new=subset_charts(charts)
-colnames(charts_new) =c("Name", "Year")
-
-
-# Finding matches between names
-matching_names <- stringdist::amatch(new_names$Name, charts_new$Name, maxDist = 5)
-
-# Filter new_names that matches the artist names
-names_to_plot <- new_names$Name[!is.na(matching_names)]
-
-#  Aggregate counts across years for names that we need to plot
-agg_data <- new_names %>%
-    filter(Name %in% names_to_plot) %>%
-    group_by(Name, Year) %>%
-    summarise(TotalCount = sum(Count))
-
-```
-
-```{r, echo=FALSE}
-
-# using ggplot
-charts_names_plot = agg_data %>% ggplot() +
-    geom_point(aes(x = Name, y = Year, size = TotalCount), shape = 21, fill="blue", alpha = 0.6, ) +
-    guides(size = F)+ theme(axis.text.x = element_text(angle = 45, hjust = 1))+
-    labs(title = "Popularity of Baby Names and Artists in Hot 100 Charts",
-         x = "Names",
-         y = "Year")
-
+charts_names_plot <- process_baby_names_and_charts(Baby_Names,charts)
 charts_names_plot
-
 ```
 
 ## 2. Conclusion
