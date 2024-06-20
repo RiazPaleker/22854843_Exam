@@ -246,7 +246,29 @@ point_olympic_plot
 
 ### Plot Three
 
+This plot shows the dominance of nations in the summer and winter olympics using a heat map on a bar graph. The darker the shade, the more medals in that period. This represents a time series of dominance overtiem. We have a main function of two inputs, which are summer and winter datasets. we then created another function to calculate the weights of medals. We gave weights to the gold,silver and bronze medal. using the mutate function, we continued to pipe to group by Year and country. we used summaries to calculate the sum of the medal score weightings given the ratio. we used this medal_weight function to calculate the tally of medals in the summer and winter olympics for all countries. We subset this to get the top 5 countries in the summer and winter olympics. We subset summer_scores and group by country, summarise to sum up the total medals and then use top_n to get the top 5 countries, given the total medals. This was similarly done for winter olympics. we combined these two datasets using bind_rows. We used a ggplot for the axis and used a geom_tile to create the heat map effects. This was done for summer and winter olympics and the plots were joined.
+
+
 ```{r,echo=FALSE, fig.width=8, warning=FALSE, message=FALSE}
 combined_dominance_plot <- dominance_plot(summer,winter)
 grid::grid.draw(combined_dominance_plot)
+```
+
+### Plot four
+
+This is scatter plot with medals on the y-axis and per capita gdp on the x-axis. The countries are plotted in its respective positions with the quartiles of the per capita gdp. This is all for the summer olympics We subset our gdp data to keep country and gdp per capita only. we used left_join to join with summer data and used filter&!is.na to filter for countries with NA as per capita gdp. We then we did the medal counts according to team sport size like in plot 2. We calculated quartiles 1,2,3 for gdp per capita. we got our medal count by using our subset summer data, grouping by country and gdp per capita and then using summarise to sum the adjusted medal count. we can then plot using ggplot with geom_point.
+```{r, fig.height=7, fig.width=8, warning=FALSE, echo=FALSE}
+gdp_medal_summer_plot <- over_perform_summer(GDP,summer)
+gdp_medal_summer_plot
+
+```
+
+
+### Plot Five
+
+The data wrangling process is exactly the same as above. The only change is the intial input from summer to winter
+
+```{r,fig.height=7, fig.width=8, warning=FALSE, echo=FALSE}
+gdp_medal_winter_plot <- over_perform_winter(GDP,winter)
+gdp_medal_winter_plot
 ```
