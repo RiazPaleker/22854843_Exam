@@ -1,5 +1,5 @@
 ---
-title: "Helping You Write Academic Papers in R using Texevier"
+title: "Longevity and Music Progression of Coldplay & Metallica"
 documentclass: elsarticle
 Thesis_FP: false
 output:
@@ -40,7 +40,7 @@ fontsize: 11pt
 linestretch: 1.2
 link-citations: true
 AddTitle: true
-abstract: |
+abstract: A report to Spotify on longevity and musical progression of some of the most famous musical bands. In this report we focus on Metallica and Coldplay. We drew inferences to hypothesise what makes songs or albums popular. We focused on popularity, cadence, speed and tempo.
   
 ---
 
@@ -73,19 +73,27 @@ source("code/regress_coldplay.R")
 ```
 
 
-<!-- ############################## -->
-<!-- # Start Writing here: -->
-<!-- ############################## -->
-
-# Introduction \label{Introduction}
 
 
+## Average Popularity of Each Metallica Album
 
-```{r,echo=FALSE,fig.height=6, fig.width=8}
+* Metallica is a heavy metal band that was created in 1981
+* We started by ranking and plotting the most popular Metallica albums
+* We found that 72 Seasons had the highest average popularity in comparison to all other albums. This included some remastered and live album performances
+* This is worked out well as we ideally wanted to investigate a studio recorded album
+* The average popularity for this studio album was 67.17%
+
+```{r,echo=FALSE,fig.height=6, fig.width=8, warning=FALSE}
 popular_metallic_plot =popular_album_metallica(metallica)
 popular_metallic_plot
 ```
 
+
+## Average Popularity of Each Coldplay Album
+
+* As we are comparing Metallica to Coldplay (a bandthat was formed in 1997), we decided to find the most popular Coldplay album.
+* We found that Parachutes released in 2000 is Coldplay's highest average popular album.
+* As a result, we have the most popular studio recorded albums from these two famous bands.
 
 
 ```{r,echo=FALSE,fig.height=6, fig.width=8}
@@ -93,18 +101,28 @@ popular_coldplay_plot= popular_album_coldplay(coldplay)
 popular_coldplay_plot
 ```
 
-```{r, echo=FALSE}
+## Comapring Metrics between 72 Seasons and Parachutes
+
+* Although these two bands are from different genres (Metallica is heavy metal, while Coldplay is pop-rock), we can compare the average metrics of their most popular albums in the table below
+* The popularity of their albums were similar: 71% for Parachutes and 67% for 72 Seasons.
+* There are also variables that yield similar results for these albums: 
+* The Cadences' of both albums are similar. This represents how suitable the album is for dancing
+* The Tempo of both albums are virtually the  This can be defined as how fast or slow the music is.
+* We do find that the Energy and Valence variables are quite different. 72 Seasons is 50 percent of Parachutes in the numeric of these two variables. Energy is described as the sense of forward motion in music. Valence is defined as the musical positiveness conveyed by a track or album in this case.
+* This table does show that these albums do have similar metrics for certain variables. However, there are variables that significantly differ. There is no conclusive evidence just yet based off these metrics. It seems as if there is no one way to create successful music
+
+```{r, echo=FALSE,warning=FALSE, message=FALSE}
 table_album_summary = album_summary(metallica,coldplay)
 table_album_summary
 ```
 
 
-```{r}
+```{r, echo=FALSE,warning=FALSE, message=FALSE}
 combined_reg_plot <- regress_metallica(metallica)
 combined_reg_plot
 ```
 
-```{r}
+```{r, echo=FALSE,warning=FALSE, message=FALSE}
 combined_reg_plot_coldplay <- regress_coldplay(coldplay)
 combined_reg_plot_coldplay
 

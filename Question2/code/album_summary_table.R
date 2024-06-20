@@ -46,8 +46,8 @@ album_summary <- function(metallica, coldplay){
       Album = "Album",
       Popularity = "Popularity",
       Danceability = "Cadence",
-      Energy = "Tempo",
-      Tempo = "Speed",
+      Energy = "Energy",
+      Tempo = "Tempo",
       Valence = "Valence"
       )
 
