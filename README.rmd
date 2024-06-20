@@ -30,12 +30,7 @@ Texevier::create_template(directory = "/Users/riazpaleker/Documents/Mcom Economi
 ```{r,include=FALSE}
 
 
-#Q2
-source("code/metallic_album_popular.R")
-source("code/coldplay_album_popular.R")
-source("code/album_summary_table.R")
-source("code/regress_metallica.R")
-source("code/regress_coldplay.R")
+
 
 #Q3
 source("code/Aid_alloc_plot.R")
@@ -53,11 +48,78 @@ source("code/overperform_winter.R")
 
 # Question One
 
-
+### Source
 ```{r}
-#Q1: Source
+
 source("code/name_persistence.R")
 source("code/Names_Artists.R")
 source("code/change_billboard.R")
+```
+
+
+### Data
+```{r}
+Baby_Names <- readRDS("./data/US_Baby_names/Baby_Names_By_US_State.rds")
+charts <- readRDS("./data/US_Baby_names/charts.rds")
+HBO_Titles <- readRDS("./data/US_Baby_names/HBO_titles.rds")
+HBO_Credits <- readRDS("./data/US_Baby_names/HBO_credits.rds")
+```
+
+
+### Packages
+```{r}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(stringdist)
+library(gridExtra)
+```
+
+### Plot One
+
+I can describe this plot as the name persistence (correlation) of the top 25 baby names that is lagged forward for 1,2 and 3 years. The plot itself shows the persistence in the top 25 baby names. Average correlation on the y-axis and decade on the x-axis. It is split between Male and Female Names. I began by loading the relevent packages into the function. This function has three inputs: Baby_Names, top_n_count = 25, lag = 1:3. Baby_names is our dataset and the 2nd input shows that we are looking at the top 25 baby names. The first step is to extract the top 25 baby names using piping. We then calculated the serial correlation as I believed this would show persistence in names better. We collected our correlation results. A for loop was used to repeat the same process but accounting for the 3 lags. This was embedded in a function called 'caluclate_serial_correlation' that had 3 inputs:Baby_Names, start_year, gender, lag. start_year is the year that you would want to begin with. This input is embedded in a for loop that yields the most popular names in the current year and the subsequent years. We then find the correlation which is the ratio of the common names to the top 25 names. We then find the correlation of all the names that are uniqe for a given year and gender. In our plot we do not want every year, we reduced it to decades. We can then use the ggplot function with a geomline function to plot our results (below)
+
+```{r, echo=FALSE}
+corr_plot <- name_persistence(Baby_Names, top_n_count = 25, lag = 1:3)
+corr_plot
+```
+
+### Plot Two
+
+In this plot below we matched popular names to famous artists. The names on the x-axis represents the most popular names that matched with music artists. The y-axis represents teh years. The size of the bubble represents the popularity of the name in a given year. The bigger the bubble the more popular the name. Our main function process_baby_names_and_charts has two inputs, which are our datasets. We wrangle them inside the function. We created a function inside the main one to subset baby names from 2010 to 2014 and only in New York (NY). We then craeted a function to subset the charts from 2010 to 2014. We used functions such as mutate,filter and select. We created then another function to match the names from subset_names to the artist names. We had to use the subset of names and filter it to names that needed to be plot and grouping it by Name and by Year. We used the summarise function to tally the counts. We could then plot our data using ggplot and geom_point functions.
+```{r,echo=FALSE}
+charts_plot <- process_baby_names_and_charts_new(Baby_Names,charts)
+charts_plot
+```
+
+
+### Plot Three
+
+This plot is exactly the same as the previous one. However, we just subset the charts from 2010 to 2014. We matched the data using tidyverse techniques and found the final data to plot using the same functions and techniques.
+
+```{r, echo=FALSE}
+charts_names_plot <- process_baby_names_and_charts(Baby_Names,charts)
+charts_names_plot
+```
+
+# Question 2
+
+### Source
+
+```{r, include=FALSE}
+source("code/metallic_album_popular.R")
+source("code/coldplay_album_popular.R")
+source("code/album_summary_table.R")
+source("code/regress_metallica.R")
+source("code/regress_coldplay.R")
+```
+
+### Data
+
+```{r,include=FALSE}
+coldplay <- read.csv("./Data/Coldplay_vs_Metallica/Coldplay.csv")
+metallica <- read.csv("./Data/Coldplay_vs_Metallica/metallica.csv")
+spoitfy <- readRDS("./Data/Coldplay_vs_Metallica/Broader_Spotify_Info.rds") 
+billboard_100 <- readRDS("./Data/Coldplay_vs_Metallica/charts.rds")
 ```
 
