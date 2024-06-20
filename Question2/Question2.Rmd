@@ -117,10 +117,23 @@ table_album_summary
 ```
 
 
+## What Makes Metallica's Music Popular?
+
+* We need understand what sort of variables contribute to the success and longevity of Metallica. This can be a guide to other aspiring music bands. Are there variables that are positively (or negatively) related to the popularity of music?
+* This gave us motivation to identify the relationship between certain variables and popularity (we ran regressions with Popularity as the dependent variable)
+* For Metallica, there are small positive relationships between Duration, Danceability (Cadence), Valence, Tempo and Energy. We found that Danceability has the steepest slope (the more suitable a song is for dancing, the more successful it can potentially be). Longer song lengths also contribute to higher Popularity. Valence and Tempo have a small, to almost no correlation to Popularity
+
 ```{r, echo=FALSE,warning=FALSE, message=FALSE}
 combined_reg_plot <- regress_metallica(metallica)
 combined_reg_plot
 ```
+
+
+## What Makes Coldplay's Music Popular?
+* Coldplay's result are somewhat different to Metallica's.
+* The commonality is that Danceability yields the same results for Coldplay. I.E. music that is more suitable for dancing is more popular.
+* There is almost no correlation between Duration and Popularity for Coldplay
+* It is interesting to find that Energy and Valence yield small negative relationships with Popularity. This could be due to the preferences of the fanbase of Coldplay or pop-rock in general. 
 
 ```{r, echo=FALSE,warning=FALSE, message=FALSE}
 combined_reg_plot_coldplay <- regress_coldplay(coldplay)
@@ -128,3 +141,10 @@ combined_reg_plot_coldplay
 
 ```
 
+
+## Conclusion
+
+* Metallica and Coldplay are bands that are still currently famous. They maintain their relevance in today's music industry. These bands have maintained their longevity and musical progression throughout the years. 72 Seasons was released in 2023. This shows longevity and relevance. These bands have started in the CD days and now have been successful in the streaming era.
+* When we compared the most popular album of Metallica and Coldplay, we found interesting results. The metrics of the album showed that Cadence and Tempo were similar. While, Valence and Energy were different
+* In our regression analysis, Danceability was the only variable in common that had the most positive relationship with Popularity
+* To conclude, further investigation is required into the specifics genres, fanbase and music eras to understand what makes these bands so special.
